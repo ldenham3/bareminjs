@@ -56,6 +56,11 @@
  */
 class ToDoList { //basically full to do list container. classes 'return' (not literally) objects, can use interchangably with objects (obj would have key value pairs, its icky)
 
+
+	constructor () {
+		this.list = null;
+	}	
+
 	/**
 	 * Still havent really figured out why everything needs a render (for react later) or what exactly it holds as it does not necessarily paint or actually render anything
 	 */
@@ -63,6 +68,7 @@ class ToDoList { //basically full to do list container. classes 'return' (not li
 
 		let container = document.createElement('div'); //create a container for the things that go in the todolist so you can add them as children and return them all
 		let list = document.createElement('ul'); //creates unordered list element
+		this.list = list;
 		let itemAddButton = document.createElement('button'); //creates button element
 		let itemInputField = document.createElement('input'); //creates text input field 
 		itemInputField.id = 'typedInName'; //sets the text inpu fields id so you can use the getelementbyid method in the handler
@@ -78,9 +84,17 @@ class ToDoList { //basically full to do list container. classes 'return' (not li
 
 	}
 
-	deleteChild(value) {
-		let deletedChild = value;
-		console.log(deletedChild);
+	deleteChild(child) {
+		// let deletedChild = value;
+		// console.log(deletedChild);
+		console.log(this.list);
+
+		console.log('we got here yayyyyyy');
+		console.log(child);
+
+		this.list.removeChild(child);
+
+		console.log(this.list);
 	}
 
 	/**
@@ -109,9 +123,9 @@ class ToDoList { //basically full to do list container. classes 'return' (not li
  */
 class ToDoItem { //kicks back a new item when called in todolist's render method to create the new li before adding it to the ul of items
 
-	constructor (value, parent) { //to do items need to be added with a value so the constructor has that as a parameter
+	constructor (value, todolist) { //to do items need to be added with a value so the constructor has that as a parameter
 		this.value = value; //listen to the class on 'this' again because its a pain
-		this.parent = parent;
+		this.todolist = todolist;
 	}
 
 
@@ -123,7 +137,9 @@ class ToDoItem { //kicks back a new item when called in todolist's render method
 
 		let itemRemoveButton = document.createElement('button'); //create a new button for removing the li from the list
 
-		itemRemoveButton.onclick = e => this.clickHandler(e);
+		itemRemoveButton.innerHTML = 'Delete';
+
+		itemRemoveButton.onclick = e => this.clickHandler(e, listItem);
 
 		listItem.appendChild(itemRemoveButton); //append the button as a child element to the new li element
 
@@ -134,10 +150,13 @@ class ToDoItem { //kicks back a new item when called in todolist's render method
 	/**
 	 * itemAddButton on click handler method
 	 */
-	clickHandler(e) { 
+	clickHandler(e, listItem) { 
 		e.target.style.backgroundColor = "pink";
-		let somethingParenty = this.parent.deleteChild(this.value);
-		console.log(this.value);
+
+		// let somethingParenty = this.parent.deleteChild(this.value);
+		// console.log(this.value);
+
+		this.todolist.deleteChild(listItem);
 	}
 
 }
